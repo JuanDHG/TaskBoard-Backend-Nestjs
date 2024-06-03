@@ -1,34 +1,26 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TaskBoardService } from './task-board.service';
 import { CreateTaskBoardDto } from './dto/create-task-board.dto';
-import { UpdateTaskBoardDto } from './dto/update-task-board.dto';
+import { StateService } from './state.service';
 
-@Controller('task-board')
+@Controller('/task-board')
 export class TaskBoardController {
-  constructor(private readonly taskBoardService: TaskBoardService) {}
+  constructor(private readonly taskBoardService: TaskBoardService, private readonly StateService: StateService) {}
 
-  @Post()
+  @Post('/crear')
   create(@Body() createTaskBoardDto: CreateTaskBoardDto) {
     return this.taskBoardService.create(createTaskBoardDto);
   }
 
-  @Get()
+  @Get('/obtener')
   findAll() {
     return this.taskBoardService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.taskBoardService.findOne(+id);
-  }
+  @Get('/states')
+  findAllStates(){
+    return this.StateService.findAllStates();
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskBoardDto: UpdateTaskBoardDto) {
-    return this.taskBoardService.update(+id, updateTaskBoardDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.taskBoardService.remove(+id);
-  }
+  
 }

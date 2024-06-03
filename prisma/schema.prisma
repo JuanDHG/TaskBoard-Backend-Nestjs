@@ -14,13 +14,18 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model State_Task {
+  id          Int    @id @default(autoincrement())
+  description String
+  icono       String
+  Task        Task[]
+}
+
 model Task {
-  id           Int      @id @default(autoincrement())
-  description  String
-  process      Int
-  completed    Int
-  paused       Int
-  deleted      Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          Int        @id @default(autoincrement())
+  description String
+  state       State_Task @relation(fields: [stateid], references: [id])
+  stateid     Int
+  icono       String
+  createdAt   DateTime   @default(now())
 }

@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskBoardDto } from './dto/create-task-board.dto';
-import { UpdateTaskBoardDto } from './dto/update-task-board.dto';
+import { Task } from '@prisma/client';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class TaskBoardService {
-  create(createTaskBoardDto: CreateTaskBoardDto) {
-    return 'This action adds a new taskBoard';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createTaskBoardDto: CreateTaskBoardDto) {
+    return this.prisma.task.create({
+      data: {
+        description: createTaskBoardDto.description,
+        state: createTaskBoardDto.state,
+        icono: createTaskBoardDto.icono,
+        createdAt:createTaskBoardDto.createdAt,
+
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all taskBoard`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} taskBoard`;
-  }
-
-  update(id: number, updateTaskBoardDto: UpdateTaskBoardDto) {
-    return `This action updates a #${id} taskBoard`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} taskBoard`;
-  }
+  async findAll(): Promise<Task []> {
+   return this.prisma.task.findMany()
 }
+}
+
+
+
+  
+
